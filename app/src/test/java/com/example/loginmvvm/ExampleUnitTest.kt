@@ -56,7 +56,6 @@ class ExampleUnitTest : KoinTest {
     @Test
     fun `email validation test`() = coroutinesTestRule.testDispatcher.runBlockingTest {
         Mockito.doReturn(false).`when`(matcher).matches()
-        viewModel.state().observeForever {}
 
         viewModel.login("", "")
         assert(viewModel.state().value is LoginScreenState.EmailValidationError)
@@ -69,8 +68,6 @@ class ExampleUnitTest : KoinTest {
     fun `password validation test`() = coroutinesTestRule.testDispatcher.runBlockingTest {
         Mockito.doReturn(true).`when`(matcher).matches()
 
-        viewModel.state().observeForever {}
-
         viewModel.login("admin@gmail.com", "")
         assert(viewModel.state().value is LoginScreenState.PasswordValidationError)
 
@@ -81,9 +78,9 @@ class ExampleUnitTest : KoinTest {
     @Test
     fun `successful login api test`() = runBlockingTest {
         Mockito.doReturn(true).`when`(matcher).matches()
-        viewModel.state().observeForever {}
+
         viewModel.login("admin@gmail.com", "12345678")
-        Thread.sleep(2000)
+        Thread.sleep(6500)
         assert(viewModel.state().value is LoginScreenState.LoginSuccess)
     }
 
@@ -91,10 +88,8 @@ class ExampleUnitTest : KoinTest {
     fun `Incorrect login api test`() = coroutinesTestRule.testDispatcher.runBlockingTest {
         Mockito.doReturn(true).`when`(matcher).matches()
 
-        viewModel.state().observeForever {}
-
         viewModel.login("admin@gmail.com2", "123456782")
-        Thread.sleep(2000)
+        Thread.sleep(6500)
         assert(viewModel.state().value is LoginScreenState.LoginFailure)
     }
 
